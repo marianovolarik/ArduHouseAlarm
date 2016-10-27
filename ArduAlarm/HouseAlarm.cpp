@@ -20,11 +20,11 @@
 HouseAlarm::HouseAlarm(int BuzzerPin)
 {
     pin_buzzer = BuzzerPin;
+    pinMode(pin_buzzer, OUTPUT);
+    state = PRE_ACTIVATED;
 }
 
 void HouseAlarm::begin(){
-    pinMode(pin_buzzer, OUTPUT);
-    state = PRE_ACTIVATED;
     startTime = millis();
     secondsCounter = startTime + ONE_SECOND_MS;
 }
