@@ -37,7 +37,7 @@ char code[10];
 char code_index = 0;
 
 void setup() {
-    pinMode(REED_SWITCH_PIN, INPUT);
+    pinMode(REED_SWITCH_PIN, INPUT_PULLUP);
     alarm.begin();
     code[0] = '\0';
 }
@@ -67,7 +67,7 @@ void loop(){
     }
 
 
-    if (digitalRead(REED_SWITCH_PIN) == LOW){
+    if (digitalRead(REED_SWITCH_PIN) == HIGH){
         alarm.ring();
     }
     alarm.run();
