@@ -33,39 +33,49 @@ Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, N_ROWS, N_COLS);
 
 HouseAlarm alarm(BUZZER_PIN);
 
-char code[10];
+char code[MAX_CODE_LEN];
 char code_index = 0;
 
-void setup() {
+
+void setup(){
     pinMode(REED_SWITCH_PIN, INPUT_PULLUP);
     alarm.begin();
     code[0] = '\0';
 }
 
 
-void loop(){
+bool readKeyboard(){
+
+    bool result = false;
 
     char key = keypad.getKey();
     if (key != NO_KEY){
         tone(BUZZER_PIN, NOTE_B5, 125);
+
+        if (code_index >= MAX_CODE_LEN){
+            code_index = 0;
+        }
+
         code[code_index] = key;
         code_index++;
 
-        if (key == '#'){
-            alarm.activate();
+        if (key == '#' || key == '*'){
+            code[code_index] = '\0';
             code_index = 0;
-            code[code_index] = '\0';
-        }
-
-        if (key == '*'){
-            /* Check code */
-            code[code_index] = '\0';
-            alarm.deactivate(code);
-            code_index = 0;
-            code[code_index] = '\0';
+            result = true;
         }
     }
 
+    return result;
+}
+
+
+void loop(){
+
+    if (readKeyboard()){
+        alarm.deactivate(code);
+        alarm.activate(code);
+    }
 
     if (digitalRead(REED_SWITCH_PIN) == HIGH){
         alarm.ring();

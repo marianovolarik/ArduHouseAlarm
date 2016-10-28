@@ -13,8 +13,8 @@
 #define PRE_RINGING_TIME_S      5
 #define PRE_RINGING_TIME_MS     PRE_RINGING_TIME_S*1000
 
-#define MAX_DEACTIVATION_CODE_LEN    10
-#define DEACTIVATION_CODE            "1364*"
+#define DEACTIVATION_CODE           "1364*"
+#define ACTIVATION_CODE             "#"
 
 
 HouseAlarm::HouseAlarm(int BuzzerPin)
@@ -82,11 +82,13 @@ void HouseAlarm::run(){
     };
 }
 
-void HouseAlarm::activate(){
+void HouseAlarm::activate(char *pwd){
     if (state == DEACTIVATED){
-        state = PRE_ACTIVATED;
-        startTime = millis();
-        secondsCounter = startTime + ONE_SECOND_MS;
+        if (strcmp(pwd, ACTIVATION_CODE) == 0){
+            state = PRE_ACTIVATED;
+            startTime = millis();
+            secondsCounter = startTime + ONE_SECOND_MS;
+        }
     }
 }
 

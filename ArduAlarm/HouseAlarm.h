@@ -1,13 +1,15 @@
 #ifndef HouseAlarm_h
 #define HouseAlarm_h
 
+#define MAX_CODE_LEN   10
+
 class HouseAlarm
 {
     public:
         HouseAlarm(int);
         void begin();
         void run();
-        void activate();
+        void activate(char *);
         void ring();
         bool is_ringing();
         bool deactivate(char *);
